@@ -1,28 +1,29 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './index.css'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import App from './App'
-import { RegisterUser } from './RegisterUser'
-import { MyPage } from './MyPage'
+import './index.css'
+import { setupWorker } from 'msw'
+import { testHandlers } from './mocks/handler'
 
-  ; (async () => {
-    if (import.meta.env.VITE_MOCKED_API === 'true') {
-      const { buildMswWorker } = await import('./testing-util/msw-util')
-      const worker = buildMswWorker()
-      await worker.start()
-    }
+const worker = setupWorker(...testHandlers)
 
-    ReactDOM.createRoot(document.getElementById('root')!).render(
-      <React.StrictMode>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/register-user" element={<RegisterUser />} />
-            <Route path="/my-page" element={<MyPage />} />
-          </Routes>
-        </BrowserRouter>
-      </React.StrictMode>,
-    )
+async function prepare() {
+  if ('active' === import.meta.env.VITE_MSW) {
+    await import('../public/mockServiceWorker.js?worker')
 
-  })()
+    return worker.start({}).then(() => {
+      console.groupCollapsed('[MSW] Loaded with handlers 🎉')
+      worker.printHandlers()
+      console.groupEnd()
+      return null
+    })
+  }
+}
+
+void prepare().then(() => {
+  ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  )
+})
