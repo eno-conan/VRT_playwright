@@ -21,5 +21,5 @@ npm init playwright@latest
    
 ### 他参考
 - [スクリーンショット色々](https://testersdock.com/playwright-screenshot-capture/)
-   [mswを使った例](https://zenn.dev/dyoshikawa/articles/07ab82a5cbcde0)
+- [mswを使った例](https://zenn.dev/dyoshikawa/articles/07ab82a5cbcde0)
 
