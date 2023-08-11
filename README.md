@@ -18,7 +18,16 @@ npm init playwright@latest
       ```
          await browser.close();
       ```
-   
+5. [MSWを使ったテスト](https://zenn.dev/dyoshikawa/articles/07ab82a5cbcde0)
+   1. インストール
+   2. 初期化
+
+6.モックサーバ起動した状態で実行
+```
+VITE_MOCKED_API=true npm run dev
+```
+
+
 ### 他参考
 - [スクリーンショット色々](https://testersdock.com/playwright-screenshot-capture/)
 - [mswを使った例](https://zenn.dev/dyoshikawa/articles/07ab82a5cbcde0)
